@@ -1,0 +1,13 @@
+# Local terraform directory (The "Tools" folder)
+.terraform/
+
+# State files (The "Actual Build Status" - very sensitive!)
+*.tfstate
+*.tfstate.*
+
+# Variables that might contain passwords
+*.tfvars
+*.tfvars.json
+
+# Crash logs
+crash.log
