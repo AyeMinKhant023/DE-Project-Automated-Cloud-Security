@@ -5,15 +5,23 @@
 # Web Server Security Group
 resource "aws_security_group" "web_sg" {
   name        = "Web-Server-SG"
-  description = "Allow web traffic"
+  description = "Allow SSH and HTTP traffic"
   vpc_id      = aws_vpc.main.id
 
-  # Allow HTTP traffic from within the VPC (Internal testing)
+  # Allow SSH (Port 22) from my IP only (Security Best Practice)
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["223.24.237.36/32"] # use my specific IP to protect anyone to connect my server (especially protecting bruth-force attack)
+  }
+
+  # Allow HTTP (Port 80) so that it can see my Flask app
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.main.cidr_block] 
+    cidr_blocks = ["0.0.0.0/0"] # I changed from "[aws_vpc.main.cidr_block]" which was locked only from vpc to connect
   }
 
   # Allow all outbound traffic (so it can reach the internet via NAT)
@@ -57,11 +65,12 @@ data "aws_ami" "amazon_linux" {
 resource "aws_instance" "web" {
   ami             = data.aws_ami.amazon_linux.id
   instance_type   = "t2.micro"
-  subnet_id       = aws_subnet.private.id
+  subnet_id       = aws_subnet.public.id # putting server in the public subnet so it can be accessed from the internet
+  key_name = "my-project-key" # key pair for SSH access
   vpc_security_group_ids = [aws_security_group.web_sg.id]
 
   tags = {
-    Name = "Private-Web-Server"
+    Name = "Web-Server-Phase-1"
   }
 }
 
