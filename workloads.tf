@@ -13,7 +13,7 @@ resource "aws_security_group" "web_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["223.24.237.36/32"] # use my specific IP to protect anyone to connect my server (especially protecting bruth-force attack)
+    cidr_blocks = ["49.237.166.195/32"] # use my specific IP to protect anyone to connect my server (especially protecting bruth-force attack)
   }
 
   # Allow HTTP (Port 80) so that it can see my Flask app
