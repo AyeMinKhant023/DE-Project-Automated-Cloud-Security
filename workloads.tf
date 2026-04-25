@@ -13,7 +13,7 @@ resource "aws_security_group" "web_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["49.237.166.195/32"] # use my specific IP to protect anyone to connect my server (especially protecting bruth-force attack)
+    cidr_blocks = ["122.154.60.165/32"] # use my specific IP to protect anyone to connect my server (especially protecting bruth-force attack)
   }
 
   # Allow HTTP (Port 80) so that it can see my Flask app
@@ -68,6 +68,20 @@ resource "aws_instance" "web" {
   subnet_id       = aws_subnet.public.id # putting server in the public subnet so it can be accessed from the internet
   key_name = "my-project-key" # key pair for SSH access
   vpc_security_group_ids = [aws_security_group.web_sg.id]
+  
+  user_data = <<-EOF
+              #!/bin/bash
+              # 1. Update and install software
+              dnf update -y
+              dnf install python3-pip git -y
+
+              # 2. Install Python libraries
+              pip3 install mysql-connector-python flask
+
+              # 3. Auto-clone files from GitHiub
+              cd /home/ec2-user
+              git clone 
+            EOF
 
   tags = {
     Name = "Web-Server-Phase-1"
