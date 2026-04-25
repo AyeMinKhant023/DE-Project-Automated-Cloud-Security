@@ -39,12 +39,13 @@ resource "aws_security_group" "db_sg" {
   description = "Allow MySQL traffic strictly from Web Server"
   vpc_id      = aws_vpc.main.id
 
-  # ONLY accept traffic on port 3306 from the Web Server Security Group
+  # ONLY accept traffic on port 5000 from the Web Server Security Group
   ingress {
-    from_port       = 3306
-    to_port         = 3306
+    from_port       = 5000
+    to_port         = 5000
     protocol        = "tcp"
-    security_groups = [aws_security_group.web_sg.id] 
+    security_groups = ["0.0.0.0/0"] # Lunch the website to public (internet - anyone can access)
+    # security_groups = [aws_security_group.web_sg.id] # Strictly only allow traffic from the Web Server SG (Initial Pracrice)
   }
 }
 
