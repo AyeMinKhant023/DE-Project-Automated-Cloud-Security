@@ -16,12 +16,12 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["49.237.4.156/32"] # use my specific IP to protect anyone to connect my server (especially protecting bruth-force attack)
   }
 
-  # Allow HTTP (Port 80) so that it can see my Flask app
+  # Allow HTTP (Port 5000) so that it can see my Flask app
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 5000
+    to_port     = 5000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # I changed from "[aws_vpc.main.cidr_block]" which was locked only from vpc to connect
+    cidr_blocks = ["0.0.0.0/0"] # Anyone can connect <-- I changed from "[aws_vpc.main.cidr_block]" which was locked only from vpc to connect
   }
 
   # Allow all outbound traffic (so it can reach the internet via NAT)
@@ -39,13 +39,12 @@ resource "aws_security_group" "db_sg" {
   description = "Allow MySQL traffic strictly from Web Server"
   vpc_id      = aws_vpc.main.id
 
-  # ONLY accept traffic on port 5000 from the Web Server Security Group
+  # ONLY accept traffic on port 3306 from the Web Server Security Group
   ingress {
-    from_port       = 5000
-    to_port         = 5000
+    from_port       = 3306
+    to_port         = 3306
     protocol        = "tcp"
-    security_groups = ["0.0.0.0/0"] # Lunch the website to public (internet - anyone can access)
-    # security_groups = [aws_security_group.web_sg.id] # Strictly only allow traffic from the Web Server SG (Initial Pracrice)
+    security_groups = [aws_security_group.web_sg.id] 
   }
 }
 
