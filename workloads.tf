@@ -108,6 +108,7 @@ resource "aws_db_instance" "database" {
   password               = "SuperSecurePass123!" # Will secure this later
   db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
   vpc_security_group_ids = [aws_security_group.db_sg.id]
+  publicly_accessible    = false
   skip_final_snapshot    = true # Makes it easy to delete for your project
 }
 
