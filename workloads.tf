@@ -13,7 +13,7 @@ resource "aws_security_group" "web_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["49.237.37.64/32"] ## use my specific IP to protect anyone to connect my server (especially protecting bruth-force attack)
+    cidr_blocks = ["49.237.190.49/32"] ## use my specific IP to protect anyone to connect my server (especially protecting bruth-force attack)
   }
 
   # Allow HTTP (Port 5000) so that it can see my Flask app
@@ -111,4 +111,3 @@ resource "aws_db_instance" "database" {
   publicly_accessible    = false
   skip_final_snapshot    = true # Makes it easy to delete for your project
 }
-
