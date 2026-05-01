@@ -13,7 +13,7 @@ resource "aws_security_group" "web_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["49.237.190.49/32"] ## use my specific IP to protect anyone to connect my server (especially protecting bruth-force attack)
+    cidr_blocks = ["49.237.46.166/32"] ## use my specific IP to protect anyone to connect my server (especially protecting bruth-force attack)
   }
 
   # Allow HTTP (Port 5000) so that it can see my Flask app
@@ -76,11 +76,14 @@ resource "aws_instance" "web" {
               dnf install python3-pip git -y
 
               # 2. Install Python libraries
-              pip3 install mysql-connector-python flask
+              pip3 install mysql-connector-python flask pymysql
 
               # 3. Auto-clone files from GitHiub
-              # cd /home/ec2-user
-              # git clone https://github.com/AyeMinKhant023/DE-Project-App.git
+              cd /home/ec2-user
+              git clone https://github.com/AyeMinKhant023/DE-Project-App.git
+
+              # Ensure ec2-user owns the cloned files
+              chown -R ec2-user:ec2-user /home/ec2-user/DE-Project-App
             EOF
 
   tags = {
