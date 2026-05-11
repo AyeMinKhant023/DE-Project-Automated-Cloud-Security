@@ -12,5 +12,8 @@
 # Crash logs
 crash.log
 
-# # macOS system files (Digital Footprints)
+# Terraform variables file
+terraform.tfvars 
+
+# macOS system files (Digital Footprints)
 .DS_Store
