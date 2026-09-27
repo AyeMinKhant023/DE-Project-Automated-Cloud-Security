@@ -13,7 +13,7 @@ resource "aws_security_group" "web_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["49.237.23.230/32"] ## use my specific IP to protect anyone to connect my server (especially protecting bruth-force attack)
+    cidr_blocks = ["0.0.0.0/0"] ## use my specific IP (-.-.-.-/32) to protect anyone to connect my server (especially protecting bruth-force attack) # Use default ip (0.0.0.0/0) while development
   }
 
   # Allow HTTP (Port 5000) so that it can see my Flask app
@@ -44,7 +44,7 @@ resource "aws_security_group" "db_sg" {
     from_port       = 3306
     to_port         = 3306
     protocol        = "tcp"
-    security_groups = [aws_security_group.web_sg.id] 
+    security_groups = [aws_security_group.web_sg.id]
   }
 }
 
@@ -63,12 +63,12 @@ data "aws_ami" "amazon_linux" {
 }
 
 resource "aws_instance" "web" {
-  ami             = data.aws_ami.amazon_linux.id
-  instance_type   = "t2.micro"
-  subnet_id       = aws_subnet.public.id # putting server in the public subnet so it can be accessed from the internet
-  key_name = "my-project-key" # key pair for SSH access
+  ami                    = data.aws_ami.amazon_linux.id
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.public.id # putting server in the public subnet so it can be accessed from the internet
+  key_name               = "my-project-key"     # key pair for SSH access
   vpc_security_group_ids = [aws_security_group.web_sg.id]
-  
+
   user_data = <<-EOF
               #!/bin/bash
               # 1. Update and install software
