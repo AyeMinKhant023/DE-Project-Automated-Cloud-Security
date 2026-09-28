@@ -32,3 +32,8 @@ output "db_subnet_group_name" {
   description = "The RDS DB subnet group name"
   value       = module.vpc.db_subnet_group_name
 }
+
+output "web_acl_arn" {
+  description = "The ARN of the WAF WebACL protecting the ALB"
+  value       = module.waf.web_acl_arn
+}

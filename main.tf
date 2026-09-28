@@ -23,3 +23,9 @@ module "asg" {
   target_group_arn       = module.alb.target_group_arn
   key_name               = var.key_name
 }
+
+# 4. WAF Module (Edge Perimeter Hardening for ALB)
+module "waf" {
+  source  = "./modules/waf"
+  alb_arn = module.alb.alb_arn
+}
