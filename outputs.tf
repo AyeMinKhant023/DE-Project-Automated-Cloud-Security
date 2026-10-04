@@ -37,3 +37,13 @@ output "web_acl_arn" {
   description = "The ARN of the WAF WebACL protecting the ALB"
   value       = module.waf.web_acl_arn
 }
+
+output "rds_kms_key_arn" {
+  description = "Customer Managed Key ARN encrypting RDS storage"
+  value       = module.kms.key_arn
+}
+
+output "db_endpoint" {
+  description = "RDS MySQL connection endpoint"
+  value       = module.database.db_endpoint
+}

@@ -29,3 +29,18 @@ module "waf" {
   source  = "./modules/waf"
   alb_arn = module.alb.alb_arn
 }
+
+# 5. KMS Module (Cryptographic Data Governance - CMK with Auto Rotation)
+module "kms" {
+  source = "./modules/kms"
+}
+
+# 6. Database Module (Encrypted RDS MySQL in Air-Gapped DB Subnets)
+module "database" {
+  source                = "./modules/database"
+  vpc_id                = module.vpc.vpc_id
+  db_subnet_group_name  = module.vpc.db_subnet_group_name
+  app_security_group_id = module.asg.app_security_group_id
+  db_password           = var.db_password
+  kms_key_arn           = module.kms.key_arn
+}
