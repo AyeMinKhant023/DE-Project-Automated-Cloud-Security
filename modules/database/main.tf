@@ -41,8 +41,8 @@ resource "aws_db_instance" "database" {
   skip_final_snapshot    = true
 
   # Cryptographic Governance (Phase 3)
-  storage_encrypted      = true
-  kms_key_id             = var.kms_key_arn
+  storage_encrypted = true
+  kms_key_id        = var.kms_key_arn
 
   tags = {
     Name = "DE-Project-Encrypted-MySQL"
